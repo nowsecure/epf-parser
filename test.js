@@ -8,10 +8,9 @@ const sep = '\x01';
 
 test('simple', t => {
   t.plan(4);
-  const p = parse();
 
-  p.on('meta', m => {
-    t.deepEqual(m, {
+  const p = parse((meta, rows) => {
+    t.deepEqual(meta, {
       columns: [{
         name: 'columnA',
         type: 'INT'
@@ -22,15 +21,15 @@ test('simple', t => {
       foo: 'bar',
       beep: 'boop'
     });
-  });
 
-  let i = 0;
-  p.on('data', row => {
-    if (!i++) t.deepEqual(row, ['valueAA', 'valueAB']);
-    else t.deepEqual(row, ['valueBA', 'valueBB']);
-  });
+    let i = 0;
+    rows.on('data', row => {
+      if (!i++) t.deepEqual(row, ['valueAA', 'valueAB']);
+      else t.deepEqual(row, ['valueBA', 'valueBB']);
+    });
 
-  p.on('end', () => t.ok(true));
+    rows.on('end', () => t.ok(true));
+  });
 
   p.write(`##ignore this${nl}`);
   p.write(`#columnA${sep}columnB${nl}`);

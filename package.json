@@ -7,8 +7,7 @@
   "dependencies": {
     "bytes": "^2.3.0",
     "multipipe": "^0.3.0",
-    "split2": "^2.1.0",
-    "through2": "^2.0.1"
+    "split2": "^2.1.0"
   },
   "devDependencies": {
     "tap": "^5.7.1"

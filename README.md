@@ -12,12 +12,13 @@ const fs = require('fs');
 const parse = require('epf-parser');
 
 fs.createReadStream('/tmp/application')
-  .pipe(parse())
-  .on('meta', m => console.log('meta', m))
-  .on('data', r => console.log('row', r));
+  .pipe(parse((meta, rows) => {
+    console.log('meta', meta);
+    rows.on('data', row => console.log('row', row));
+  }));
 ```
 
-Will emit `meta` like this, with all the meta k/v pairs in one object, and columns and column types merged:
+Will call back with `meta` like this, with all the meta k/v pairs in one object, and columns and column types merged:
 
 ```js
 meta { columns:
