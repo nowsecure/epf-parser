@@ -2,7 +2,7 @@
   "name": "epf-parser",
   "description": "Parse iTunes Enterprise Partner Feeds",
   "repository": "viaforensics/epf-parser",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "dependencies": {
     "bytes": "^2.3.0",
