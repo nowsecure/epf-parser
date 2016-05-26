@@ -41,3 +41,30 @@ test('simple', t => {
   p.write(`valueBA${sep}valueBB${nl}`);
   p.end();
 });
+
+test('no rows', t => {
+  t.plan(2);
+
+  const p = parse((meta, rows) => {
+    t.deepEqual(meta, {
+      columns: [{
+        name: 'columnA',
+        type: 'INT'
+      }, {
+        name: 'columnB',
+        type: 'BIGINT'
+      }]
+    });
+
+    let i = 0;
+    rows.on('data', row => {
+      t.fail();
+    });
+
+    rows.on('end', () => t.ok(true));
+  });
+
+  p.write(`#columnA${sep}columnB${nl}`);
+  p.write(`#dbTypes:INT${sep}BIGINT${nl}`);
+  p.end();
+});

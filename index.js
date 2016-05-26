@@ -46,7 +46,10 @@ module.exports = (cb) => {
           done();
         }
       }
-    }).on('finish', () => rows.push(null))
+    }).on('finish', () => {
+      if (!metaEmitted) cb(meta, rows);
+      rows.push(null);
+    })
   );
 
   return out;
