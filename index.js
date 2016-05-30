@@ -27,6 +27,8 @@ module.exports = (cb) => {
               for (let i = 0; i < types.length; i++) {
                 meta.columns[i].type = types[i];
               }
+            } else if (key == 'primaryKey') {
+              meta.primaryKey = value.split(/\x01/);
             } else {
               meta[key] = value;
             }

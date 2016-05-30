@@ -56,15 +56,45 @@ test('no rows', t => {
       }]
     });
 
-    let i = 0;
-    rows.on('data', row => {
-      t.fail();
-    });
-
+    rows.on('data', row => t.fail());
     rows.on('end', () => t.ok(true));
   });
 
   p.write(`#columnA${sep}columnB${nl}`);
   p.write(`#dbTypes:INT${sep}BIGINT${nl}`);
+  p.end();
+});
+
+test('single primary key', t => {
+  t.plan(2);
+
+  const p = parse((meta, rows) => {
+    t.deepEqual(meta, {
+      columns: [],
+      primaryKey: ['foo']
+    });
+
+    rows.on('data', row => t.fail());
+    rows.on('end', () => t.ok(true));
+  });
+
+  p.write(`#primaryKey:foo${nl}`);
+  p.end();
+});
+
+test('compound primary key', t => {
+  t.plan(2);
+
+  const p = parse((meta, rows) => {
+    t.deepEqual(meta, {
+      columns: [],
+      primaryKey: ['foo', 'bar']
+    });
+
+    rows.on('data', row => t.fail());
+    rows.on('end', () => t.ok(true));
+  });
+
+  p.write(`#primaryKey:foo${sep}bar${nl}`);
   p.end();
 });
