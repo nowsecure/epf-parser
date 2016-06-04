@@ -17,10 +17,11 @@ module.exports = (cb) => {
     Writable({
       objectMode: true,
       write: (line, _, done) => {
-        if (/^##/.test(line)) return done();
-        if (/^#/.test(line)) {
+        if (line[0] == '#') {
+          if (line[1] == '#') return done();
+
           line = line.slice(1);
-          if (/:/.test(line)) {
+          if (line.indexOf(':') > -1) {
             const [ key, value ] = line.split(':');
             if (key == 'dbTypes') {
               const types = value.split(/\x01/);
