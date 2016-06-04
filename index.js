@@ -44,7 +44,9 @@ module.exports = (cb) => {
             metaEmitted = true;
           }
 
-          rows.push(line.split(/\x01/));
+          const row = line.split(/\x01/);
+          row.raw = line;
+          rows.push(row);
           done();
         }
       }

@@ -65,6 +65,8 @@ row [ 'some string',
   'some string' ]
 ```
 
+For debugging purposes, every row will have the original raw line attached as `.raw`.
+
 ## License
 
   MIT

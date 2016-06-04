@@ -7,7 +7,7 @@ const nl = '\x02\n';
 const sep = '\x01';
 
 test('simple', t => {
-  t.plan(4);
+  t.plan(6);
 
   const p = parse((meta, rows) => {
     t.deepEqual(meta, {
@@ -24,6 +24,8 @@ test('simple', t => {
 
     let i = 0;
     rows.on('data', row => {
+      t.ok(row.raw);
+      delete row.raw;
       if (!i++) t.deepEqual(row, ['valueAA', 'valueAB']);
       else t.deepEqual(row, ['valueBA', 'valueBB']);
     });
