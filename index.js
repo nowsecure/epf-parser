@@ -3,7 +3,8 @@
 const split = require('split2');
 const pipe = require('multipipe');
 const bytes = require('bytes');
-const { Writable, PassThrough } = require('stream');
+const Writable = require('stream').Writable;
+const PassThrough = require('stream').PassThrough;
 
 module.exports = (cb) => {
   let meta = { columns: [] };
@@ -22,7 +23,10 @@ module.exports = (cb) => {
 
           line = line.slice(1);
           if (line.indexOf(':') > -1) {
-            const [ key, value ] = line.split(':');
+            const segs = line.split(':');
+            const key = segs[0];
+            const value = segs[1];
+
             if (key == 'dbTypes') {
               const types = value.split(/\x01/);
               for (let i = 0; i < types.length; i++) {
