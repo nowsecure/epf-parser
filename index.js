@@ -1,45 +1,54 @@
 'use strict';
 
-const split = require('split2');
+const splitStream = require('binary-split');
+const split = require('buffer-split');
 const pipe = require('multipipe');
 const bytes = require('bytes');
 const Writable = require('stream').Writable;
 const PassThrough = require('stream').PassThrough;
 
+const pound = '#'.charCodeAt(0);
+const dbTypes = Buffer('dbTypes');
+const primaryKey = Buffer('primaryKey');
+const rowDelim = Buffer('\x01');
+
 module.exports = (cb) => {
-  let meta = { columns: [] };
+  let meta = { columns: [], primaryKey: [] };
   let metaEmitted = false;
   const rows = PassThrough({ objectMode: true });
 
   const out = pipe(
-    split('\x02\n', {
+    splitStream('\x02\n', {
       maxLength: bytes('1mb')
     }),
     Writable({
       objectMode: true,
       write: (line, _, done) => {
-        if (line[0] == '#') {
-          if (line[1] == '#') return done();
+        if (line[0] == pound) {
+          if (line[1] == pound) return done();
 
           line = line.slice(1);
-          if (line.indexOf(':') > -1) {
-            const segs = line.split(':');
-            const key = segs[0];
-            const value = segs[1];
+          const idx = line.indexOf(':');
+          if (idx > -1) {
+            const key = line.slice(0, idx);
+            const value = line.slice(idx+1, line.length);
 
-            if (key == 'dbTypes') {
-              const types = value.split(/\x01/);
+            if (key.compare(dbTypes) === 0) {
+              const types = split(value, rowDelim);
               for (let i = 0; i < types.length; i++) {
-                meta.columns[i].type = types[i];
+                meta.columns[i].type = types[i].toString();
               }
-            } else if (key == 'primaryKey') {
-              meta.primaryKey = value.split(/\x01/);
+            } else if (key.compare(primaryKey) === 0) {
+              const keys = split(value, rowDelim);
+              for (let i = 0; i < keys.length; i++) {
+                meta.primaryKey.push(keys[i].toString());
+              }
             } else {
-              meta[key] = value;
+              meta[key.toString()] = value.toString();
             }
           } else {
-            for (let name of line.split(/\x01/)) {
-              meta.columns.push({ name: name });
+            for (let name of split(line, rowDelim)) {
+              meta.columns.push({ name: name.toString() });
             }
           }
           done();
@@ -49,7 +58,7 @@ module.exports = (cb) => {
             metaEmitted = true;
           }
 
-          const row = line.split(/\x01/);
+          const row = split(line, rowDelim).map(String);
           row.raw = line;
           rows.push(row);
           done();

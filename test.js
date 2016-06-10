@@ -19,7 +19,8 @@ test('simple', t => {
         type: 'BIGINT'
       }],
       foo: 'bar',
-      beep: 'boop'
+      beep: 'boop',
+      primaryKey: []
     });
 
     let i = 0;
@@ -55,7 +56,8 @@ test('no rows', t => {
       }, {
         name: 'columnB',
         type: 'BIGINT'
-      }]
+      }],
+      primaryKey: []
     });
 
     rows.on('data', row => t.fail());
