@@ -46,23 +46,23 @@ meta { columns:
 Will emit rows as `data` events like this (real data hidden for reasons):
 
 ```
-row [ 'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string',
-  'some string' ]
+row [ Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string'),
+  Buffer('some string') ]
 ```
 
 For debugging purposes, every row will have the original raw line attached as `.raw`.

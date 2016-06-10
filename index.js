@@ -58,7 +58,7 @@ module.exports = (cb) => {
             metaEmitted = true;
           }
 
-          const row = split(line, rowDelim).map(String);
+          const row = split(line, rowDelim);
           row.raw = line;
           rows.push(row);
           done();

@@ -27,8 +27,8 @@ test('simple', t => {
     rows.on('data', row => {
       t.ok(row.raw);
       delete row.raw;
-      if (!i++) t.deepEqual(row, ['valueAA', 'valueAB']);
-      else t.deepEqual(row, ['valueBA', 'valueBB']);
+      if (!i++) t.deepEqual(row, [Buffer('valueAA'), Buffer('valueAB')]);
+      else t.deepEqual(row, [Buffer('valueBA'), Buffer('valueBB')]);
     });
 
     rows.on('end', () => t.ok(true));
