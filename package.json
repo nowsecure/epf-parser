@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "binary-split": "^1.0.2",
-    "buffer-split": "juliangruber/node-buffer-split#fix/empty-chunks",
+    "buffer-split": "^1.0.0",
     "bytes": "^2.3.0",
     "multipipe": "^0.3.0"
   },
