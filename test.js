@@ -7,7 +7,7 @@ const nl = '\x02\n';
 const sep = '\x01';
 
 test('simple', t => {
-  t.plan(6);
+  t.plan(8);
 
   const p = parse((meta, rows) => {
     t.deepEqual(meta, {
@@ -27,8 +27,14 @@ test('simple', t => {
     rows.on('data', row => {
       t.ok(row.raw);
       delete row.raw;
-      if (!i++) t.deepEqual(row, [Buffer('valueAA'), Buffer('valueAB')]);
-      else t.deepEqual(row, [Buffer('valueBA'), Buffer('valueBB')]);
+      if (i == 0) {
+        t.deepEqual(row, [Buffer('valueAA'), Buffer('valueAB')]);
+      } else if (i == 1) {
+        t.deepEqual(row, [Buffer('valueBA'), Buffer('valueBB')]);
+      } else {
+        t.deepEqual(row, [Buffer('valueCA'), Buffer('')]);
+      }
+      i++;
     });
 
     rows.on('end', () => t.ok(true));
@@ -42,6 +48,7 @@ test('simple', t => {
   p.write(`##ignore this as well${nl}`);
   p.write(`valueAA${sep}valueAB${nl}`);
   p.write(`valueBA${sep}valueBB${nl}`);
+  p.write(`valueCA${sep}${nl}`);
   p.end();
 });
 
@@ -102,3 +109,4 @@ test('compound primary key', t => {
   p.write(`#primaryKey:foo${sep}bar${nl}`);
   p.end();
 });
+
