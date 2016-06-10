@@ -2,7 +2,7 @@
   "name": "epf-parser",
   "description": "Parse iTunes Enterprise Partner Feeds",
   "repository": "nowsecure/epf-parser",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "license": "MIT",
   "dependencies": {
     "binary-split": "^1.0.2",
