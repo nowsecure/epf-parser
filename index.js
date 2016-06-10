@@ -12,7 +12,7 @@ module.exports = (cb) => {
   const rows = PassThrough({ objectMode: true });
 
   const out = pipe(
-    split(/\x02\n/, {
+    split('\x02\n', {
       maxLength: bytes('1mb')
     }),
     Writable({
