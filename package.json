@@ -5,7 +5,7 @@
   "version": "4.0.2",
   "license": "MIT",
   "dependencies": {
-    "binary-split": "^1.0.2",
+    "binary-split": "juliangruber/binary-split#fix/lookbehind",
     "buffer-split": "^1.0.0",
     "bytes": "^2.3.0",
     "multipipe": "^0.3.0"
